@@ -28,7 +28,8 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $feedbacks = Feedback::orderBy('id','DESC')->paginate(5);
+        $user = auth()->user()->id;
+        $feedbacks = Feedback::orderBy('id','DESC')->where('user_id', '=', $user)->paginate(5);
         return view('home',compact('feedbacks'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }

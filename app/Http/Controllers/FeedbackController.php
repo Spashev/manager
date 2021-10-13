@@ -27,7 +27,8 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        $feedback = Feedback::latest()->with('status')->paginate(5);
+        $user = auth()->user()->id;
+        $feedback = Feedback::latest()->with('status')->where('user_id', '=', $user)->paginate(5);
         return view('feedback.index',compact('feedback'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
