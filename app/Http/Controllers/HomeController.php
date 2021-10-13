@@ -15,10 +15,6 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('permission:list|create|edit|delete', ['only' => ['index','store']]);
-        $this->middleware('permission:create', ['only' => ['create','store']]);
-        $this->middleware('permission:edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:delete', ['only' => ['destroy']]);
     }
 
     /**
