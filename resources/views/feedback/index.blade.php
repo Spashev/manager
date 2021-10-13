@@ -31,6 +31,9 @@
             <th>Tema</th>
             <th>Details</th>
             <th>Status</th>
+            @role('manager')
+            <th>Author</th>
+            @endrole
             <th width="280px">Action</th>
         </tr>
         @foreach ($feedback as $item)
@@ -47,6 +50,9 @@
                         <span style="color:royalblue;font-size: 14px"><b>{{ $item->status->title }}</b></span>
                     @endif
                 </td>
+                @role('manager')
+                <td>{{ $item->user->name }}</td>
+                @endrole
                 <td>
                     <form action="{{ route('feedback.destroy',$item->id) }}" method="POST">
                         <a class="btn btn-info" href="{{ route('feedback.show',$item->id) }}">Show</a>

@@ -25,6 +25,9 @@
             <th>No</th>
             <th>Name</th>
             <th>Status</th>
+            @role('manager')
+            <td>Author</td>
+            @endrole
             <th width="280px">Action</th>
         </tr>
         @foreach ($feedbacks as $key => $feedback)
@@ -40,6 +43,9 @@
                         <span style="color:royalblue;font-size: 14px"><b>{{ $feedback->status->title }}</b></span>
                     @endif
                 </td>
+                @role('manager')
+                <td>{{ $feedback->user->name }}</td>
+                @endrole
                 <td>
                     <a class="btn btn-info" href="{{ route('feedback.show',$feedback->id) }}">Show <span>&#128269;</span></a>
                     @can('edit')

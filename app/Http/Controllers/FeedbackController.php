@@ -27,8 +27,12 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        $user = auth()->user()->id;
-        $feedback = Feedback::latest()->with('status')->where('user_id', '=', $user)->paginate(5);
+        $user = auth()->user();
+        if($user->getRoleNames()[0] == 'user') {
+            $feedback = Feedback::latest()->with('status')->where('user_id', '=', $user->id)->paginate(5);
+        } else {
+            $feedback = Feedback::latest()->with('status')->with('user')->paginate(5);
+        }
         return view('feedback.index',compact('feedback'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
@@ -88,6 +92,10 @@ class FeedbackController extends Controller
      */
     public function show(Feedback $feedback)
     {
+        $user = auth()->user();
+        if($user->getRoleNames()[0] == 'user' && $user->id != $feedback->user_id) {
+            return  redirect('home');
+        }
         return view('feedback.show',compact('feedback'));
     }
 
@@ -99,6 +107,10 @@ class FeedbackController extends Controller
      */
     public function edit(Feedback $feedback)
     {
+        $user = auth()->user();
+        if($user->getRoleNames()[0] == 'user' && $user->id != $feedback->user_id) {
+            return  redirect('home');
+        }
         return view('feedback.edit',compact('feedback'));
     }
 

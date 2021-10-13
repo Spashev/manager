@@ -28,8 +28,12 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $user = auth()->user()->id;
-        $feedbacks = Feedback::orderBy('id','DESC')->where('user_id', '=', $user)->paginate(5);
+        $user = auth()->user();
+        if($user->getRoleNames()[0] == 'user') {
+            $feedbacks = Feedback::latest()->with('status')->where('user_id', '=', $user->id)->paginate(5);
+        } else {
+            $feedbacks = Feedback::latest()->with('status')->with('user')->paginate(5);
+        }
         return view('home',compact('feedbacks'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
